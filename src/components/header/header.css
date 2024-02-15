@@ -1,0 +1,20 @@
+.header {
+    height: 10%;
+    width: 100%;
+    background-color: #FEFBF6;
+    border-radius: 0px 0px 15px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-block: 10px;
+}
+
+span {
+    display: flex;
+    font-size: 20px;
+}
+
+.secondName {
+    font-size: 30px;
+}

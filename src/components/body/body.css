@@ -1,0 +1,71 @@
+.body {
+    width: 98%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    overflow-y: auto;
+    padding-inline: 1%;
+}
+
+.botBox {
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+}
+
+.clientBox {
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+}
+
+.botMessage {
+    display: flex;
+    color: white;
+    background-color: #ECB159;
+    width: 25%;
+    border-radius: 10px;
+    padding-inline: 10px;
+    padding-block: 5px;
+    font-size: 30px;
+    gap: 10px;
+    overflow-wrap: break-word;
+}
+
+.clientMessage {
+    color: white;
+    background-color: #B67352;
+    width: 25%;
+    border-radius: 10px;
+    padding-inline: 10px;
+    padding-block: 5px;
+    font-size: 30px;
+    gap: 10px;
+    overflow-wrap: break-word;
+}
+
+.botImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.text {
+    inline-size: 80%;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+
+    .clientBox, .botBox {
+        justify-content: center;
+    }
+
+    .clientMessage, .botMessage {
+        width: 100%;
+    }
+}
