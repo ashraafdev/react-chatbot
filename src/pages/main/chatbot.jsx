@@ -2,28 +2,34 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Body from "../../components/body/body";
 import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
+import ConversationId from "../../models/ConversationId";
 import "./chatbot.css";
 
 export const ChatBotContext = createContext(null);
 
 export default function ChatBot() {
-    const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
-    const updateMessage = (val) => {
-        setMessage(val)
-    }
+  const updateMessage = (val) => {
+    setMessage(val);
+  };
 
-    useEffect(() => {
-        console.log(message)
-    }, [message]);
+  /* useEffect(() => {
+    console.log(message);
+  }, [message]); */
 
-    return (
-        <ChatBotContext.Provider value={[updateMessage]}>
-            <main>
-                <Header />
-                <Body />
-                <Footer />
-            </main>
-        </ChatBotContext.Provider>
-    );
+  useEffect(() => {
+    let newConversationId = new ConversationId(null, 2);
+    newConversationId.save();
+  }, []);
+
+  return (
+    <ChatBotContext.Provider value={[updateMessage]}>
+      <main>
+        <Header />
+        <Body />
+        <Footer />
+      </main>
+    </ChatBotContext.Provider>
+  );
 }
