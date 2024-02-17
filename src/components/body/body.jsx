@@ -1,6 +1,8 @@
+import { useContext, useEffect } from "react";
 import "./body.css";
 
 export default function Body() {
+  
   return (
     <div className="body">
       <div className="botBox">
@@ -19,7 +21,7 @@ export default function Body() {
       </div>
       <div className="clientBox">
         <div className="clientMessage">
-        <div>
+          <div>
             <img
               className="botImg"
               width="40"
@@ -33,7 +35,7 @@ export default function Body() {
       </div>
       <div className="clientBox">
         <div className="clientMessage">
-        <div>
+          <div>
             <img
               className="botImg"
               width="40"
