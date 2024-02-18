@@ -1,4 +1,4 @@
-import FirestoreService from "./../hooks/Database";
+import {FirebaseDatabase} from "../database/Database";
 import { addDoc, collection } from 'firebase/firestore';
 
 // abstract class to create instance for various collections
@@ -38,7 +38,7 @@ export default abstract class AbstractModel {
 
         try {
             // add document to firestore
-            await addDoc(collection(FirestoreService, this.constructor.collection), conversation_properties);
+            await addDoc(collection(FirebaseDatabase, this.constructor.collection), conversation_properties);
             return true;
         } catch (err) {
             console.error(err);
