@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  Route,
+  Routes,
+  useLocation,
+  redirect,
+  useNavigate,
+  BrowserRouter,
+} from "react-router-dom";
+import ChatBot from "./pages/main/chatbot.jsx";
+import "./App.css";
+import Login from "./pages/login/login.jsx";
+import RequireAuth from "./middleware/Auth.jsx";
+import { CurrentUser, SignOut } from "./containers/Auth.js";
+import toast from "react-hot-toast";
+import Test from "./pages/testss/Test.jsx";
+import { useAuthState } from "./hooks/Auth.js";
+import { createContext, useEffect, useState } from "react";
+
+export const AuthContext = createContext();
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { authState, isPending } = useAuthState();
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    if (!authState && !isPending)
+      setIsAuthenticated(false)
+    else if (authState && !isPending) 
+      setIsAuthenticated(true)
+  }, [authState, isPending]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthContext.Provider value={{isAuthenticated}}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/home" exact element={<ChatBot />} />
+          <Route path="/login" exact element={<Login />} />
+          <Route path="/test" exact element={<Test />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
+  );
 }
 
-export default App
+export default App;

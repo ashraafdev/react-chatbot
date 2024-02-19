@@ -1,14 +1,14 @@
 import "./footer.css";
-import { ChatBotContext } from "./../../pages/main/chatbot";
+/* import { ChatBotContext } from "./../../pages/main/chatbot"; */
 import { useContext, useEffect } from "react";
 
 export default function Footer() {
-  const [updateMessage] = useContext(ChatBotContext);
+  /* const [updateMessage] = useContext(ChatBotContext); */
 
   return (
     <div className="footer">
       <textarea
-        onChange={(e) => updateMessage(e.target.value)}
+        /* onChange={(e) => updateMessage(e.target.value)} */
         name=""
         id=""
         cols="30"

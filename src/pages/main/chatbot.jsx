@@ -3,42 +3,32 @@ import Body from "../../components/body/body";
 import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import ConversationId from "../../models/ConversationId";
-import { EmailPasswordAuth } from "../../containers/Auth";
-import { useAuthState } from "../../hooks/Auth";
 import "./chatbot.css";
+import { AuthContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
-export const ChatBotContext = createContext(null);
+/* export const ChatBotContext = createContext(null); */
 
 export default function ChatBot() {
   const [message, setMessage] = useState("");
-
-  const { authState } = useAuthState();
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const updateMessage = (val) => {
     setMessage(val);
   };
 
-  /* useEffect(() => {
-    console.log(message);
-  }, [message]); */
-
   useEffect(() => {
-    /* let newConversationId = new ConversationId(null, 2);
-    newConversationId.save(); */
-    /* EmailPasswordAuth("ijoifjqwf@qwqwf.com", "jqfqwfqwf"); */
-  }, []);
+    if (isAuthenticated === false) navigate('/login');
+  }, [isAuthenticated]);
 
-  useEffect(() => {
-   
-  }, [authState]);
-
+  {/* <ChatBotContext.Provider value={[updateMessage]}> */}
   return (
-    <ChatBotContext.Provider value={[updateMessage]}>
       <main>
         <Header />
         <Body />
         <Footer />
       </main>
-    </ChatBotContext.Provider>
   );
+  {/* </ChatBotContext.Provider> */}
 }
