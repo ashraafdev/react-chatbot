@@ -6,8 +6,9 @@ import ConversationId from "../../models/ConversationId";
 import "./chatbot.css";
 import { AuthContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import ConversationText from "../../models/ConversationText";
 
-/* export const ChatBotContext = createContext(null); */
+export const ChatBotContext = createContext(null);
 
 export default function ChatBot() {
   const [message, setMessage] = useState("");
@@ -21,6 +22,13 @@ export default function ChatBot() {
   useEffect(() => {
     if (isAuthenticated === false) navigate('/login');
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    let conversationText = new ConversationText(123, 'hello world!', 'bot');
+    /*conversationText.save(); */
+
+    /* conversationText.where('test', '==', 123).where('ttt', '==', 12345).go(); */
+  }, []);
 
   {/* <ChatBotContext.Provider value={[updateMessage]}> */}
   return (

@@ -23,7 +23,7 @@ function App() {
   }, [authState, isPending]);
 
   return (
-    <AuthContext.Provider value={{isAuthenticated}}>
+    <AuthContext.Provider value={{isAuthenticated, authState}}>
       <BrowserRouter>
         <Routes>
           <Route path="/home" exact element={<ChatBot />} />

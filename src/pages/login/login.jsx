@@ -1,16 +1,20 @@
 import { useRef } from "react";
 import { EmailPasswordAuth } from "../../containers/Auth";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const email = useRef(null);
   const password = useRef(null);
+
+  const navigate = useNavigate();
 
   async function login(evnt) {
     evnt.preventDefault();
     try {
       await EmailPasswordAuth(email.current.value, password.current.value);
       toast.success("Logged with success");
+      navigate("/home");
     } catch (err) {
       toast.error(`Error => ${err.message}`);
     }
@@ -25,7 +29,7 @@ export default function Login() {
           </div>
         </div>
         <div className="flex-1 flex justify-center items-center">
-          <div className="flex bg-[#B67352] w-[90%] px-10 py-10 rounded-md m-5">
+          <div className="flex bg-[#1B1A55] w-[90%] px-10 py-10 rounded-md m-5">
             <form onSubmit={(e) => login(e)} className="w-full">
               <div className="mb-6">
                 <label
@@ -54,7 +58,7 @@ export default function Login() {
                   ref={password}
                   type="password"
                   id="password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 placeholder:text-dark text-dark text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="•••••••••"
                   required
                 />
@@ -85,7 +89,7 @@ export default function Login() {
                 </div> */}
               <button
                 type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-[#535C91] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
                 Login
               </button>

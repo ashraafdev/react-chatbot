@@ -10,7 +10,7 @@ export default function Header() {
     }
 
     return (
-        <div className="header">
+        <div className="header bg-[#1B1A55]">
             <a onClick={moveToAnotherPage}>
                 <img  width="80" src="https://cdn-icons-png.flaticon.com/512/10061/10061872.png" />
             </a>

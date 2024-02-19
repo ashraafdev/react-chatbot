@@ -1,5 +1,5 @@
 import {FirebaseDatabase} from "../database/Database";
-import { addDoc, collection } from 'firebase/firestore';
+import {QueryFieldFilterConstraint, addDoc, collection, getDocs, query, where} from 'firebase/firestore';
 
 // abstract class to create instance for various collections
 export default abstract class AbstractModel {
@@ -10,6 +10,9 @@ export default abstract class AbstractModel {
     created_at: Date;
     updated_at: Date | null = null;
     deleted_at: Date | null = null;
+
+    // where conditions
+    whereConditions: QueryFieldFilterConstraint[] = [];
 
     // construct an instance of the collection, not saved
     constructor(...args: any[]) {
@@ -26,22 +29,54 @@ export default abstract class AbstractModel {
     }
 
     async save() {
-        const conversation_properties = {};
+        const model_properties = {};
     
         // match the model properties with it's appropriate value
         Object.getOwnPropertyNames(this).forEach((propertyName) => {
-            conversation_properties[propertyName] = this[propertyName];
+            model_properties[propertyName] = this[propertyName];
         });
 
         // add timestamps and softDelete
-        Object.assign(conversation_properties, {created_at: this.created_at, updated_at: this.updated_at, deleted_at: this.deleted_at});
+        Object.assign(model_properties, {created_at: this.created_at, updated_at: this.updated_at, deleted_at: this.deleted_at});
 
         try {
             // add document to firestore
-            await addDoc(collection(FirebaseDatabase, this.constructor.collection), conversation_properties);
+            await addDoc(collection(FirebaseDatabase, this.constructor.collection), model_properties);
             return true;
         } catch (err) {
             console.error(err);
+        }
+    }
+
+    where(field: string, operator, values) {
+        this.whereConditions = [
+            ...this.whereConditions, where(field, operator, values),
+        ];
+
+        return this;
+    }
+
+    async go() {
+        try {
+            console.log(this.whereConditions);
+
+
+            // create query from chain conditions
+            /* let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.whereConditions);
+            
+            // array of result;
+            let result: object[] = [];
+
+            // run the query
+            const querySnapshot = await getDocs(q);
+           
+            // loop through querySnapshot and get rows 
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                result = [...result, {id: doc.id, data: doc.data()}];
+            }); */
+        } catch (err) {
+            console.log(err);
         }
     }
 }

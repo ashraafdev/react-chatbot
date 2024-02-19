@@ -6,7 +6,7 @@ export default function Footer() {
   /* const [updateMessage] = useContext(ChatBotContext); */
 
   return (
-    <div className="footer">
+    <div className="footer bg-[#1B1A55]">
       <textarea
         /* onChange={(e) => updateMessage(e.target.value)} */
         name=""
