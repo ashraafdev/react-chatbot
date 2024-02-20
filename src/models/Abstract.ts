@@ -1,5 +1,5 @@
 import {FirebaseDatabase} from "../database/Database";
-import {QueryFieldFilterConstraint, addDoc, collection, getDocs, query, where} from 'firebase/firestore';
+import {OrderByDirection, QueryFieldFilterConstraint, addDoc, collection, getDocs, orderBy, query, where} from 'firebase/firestore';
 
 // abstract class to create instance for various collections
 export default abstract class AbstractModel {
@@ -13,6 +13,9 @@ export default abstract class AbstractModel {
 
     // where conditions
     static whereConditions: QueryFieldFilterConstraint[] = [];
+
+    // orderBy conditions
+    static orderByConditions = [];
 
     // construct an instance of the collection, not saved
     constructor(...args: any[]) {
@@ -56,10 +59,16 @@ export default abstract class AbstractModel {
         return this;
     }
 
+    orderBy(column: string, order: OrderByDirection = 'asc') {
+        this.constructor.orderByConditions = [
+            ...this.constructor.orderByConditions, orderBy(column, order),
+        ];
+    }
+
     async go() {
         try {
             // create query from chain conditions
-            let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.constructor.whereConditions);
+            let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.constructor.whereConditions, ...this.constructor.orderByConditions);
 
             // array of result;
             let result: object[] = [];

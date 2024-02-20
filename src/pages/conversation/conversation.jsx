@@ -1,10 +1,40 @@
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../App";
 import ConversationBody, {
   Button,
   ConversationDate,
 } from "../../components/conversations/conversationComponents";
 import Header from "../../components/header/header";
+import ConversationId from "../../models/ConversationId";
 
 export default function Conversations() {
+  const { isAuthenticated, authState } = useContext(AuthContext);
+
+  const [conversations, setConversations] = useState({
+    today: [],
+    yesterday: [],
+    week: [],
+    month: [],
+    rest: [],
+  });
+
+  const getConversations = async () => {
+    let conversations = await (new ConversationId()).where('user_id', '==', authState.uid).go();
+    console.log(conversations);
+  }
+
+  useEffect(() => {
+    if (isAuthenticated === false) navigate("/login");
+    else if (isAuthenticated) {
+        console.log(authState.uid);
+        getConversations();        
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    console.log(isAuthenticated, authState);
+  }, [isAuthenticated, authState]);
+
   return (
     <main className="bg-[#070F2B] h-screen flex flex-col">
       <Header />
