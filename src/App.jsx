@@ -8,6 +8,7 @@ import Login from "./pages/login/login.jsx";
 import { useAuthState } from "./hooks/Auth.js";
 import { createContext, useEffect, useState } from "react";
 import "./App.css";
+import Conversations from "./pages/conversation/conversation.jsx";
 
 export const AuthContext = createContext();
 
@@ -26,8 +27,9 @@ function App() {
     <AuthContext.Provider value={{isAuthenticated, authState}}>
       <BrowserRouter>
         <Routes>
-          <Route path="/home" exact element={<ChatBot />} />
           <Route path="/login" exact element={<Login />} />
+          <Route path="/conversations" exact element={<Conversations />} />
+          <Route path="/home" exact element={<ChatBot />} />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>
