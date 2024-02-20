@@ -4,7 +4,7 @@ import "./body.css";
 export default function Body() {
   
   return (
-    <div className="body">
+    <div className="w-full h-[80%] overflow-y-auto">
       <div className="botBox">
         <div className="botMessage">
           <div>

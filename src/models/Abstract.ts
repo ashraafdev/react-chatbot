@@ -12,7 +12,7 @@ export default abstract class AbstractModel {
     deleted_at: Date | null = null;
 
     // where conditions
-    whereConditions: QueryFieldFilterConstraint[] = [];
+    static whereConditions: QueryFieldFilterConstraint[] = [];
 
     // construct an instance of the collection, not saved
     constructor(...args: any[]) {
@@ -49,8 +49,8 @@ export default abstract class AbstractModel {
     }
 
     where(field: string, operator, values) {
-        this.whereConditions = [
-            ...this.whereConditions, where(field, operator, values),
+        this.constructor.whereConditions = [
+            ...this.constructor.whereConditions, where(field, operator, values),
         ];
 
         return this;
@@ -58,12 +58,9 @@ export default abstract class AbstractModel {
 
     async go() {
         try {
-            console.log(this.whereConditions);
-
-
             // create query from chain conditions
-            /* let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.whereConditions);
-            
+            let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.constructor.whereConditions);
+
             // array of result;
             let result: object[] = [];
 
@@ -74,7 +71,9 @@ export default abstract class AbstractModel {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 result = [...result, {id: doc.id, data: doc.data()}];
-            }); */
+            });
+
+            return result;
         } catch (err) {
             console.log(err);
         }

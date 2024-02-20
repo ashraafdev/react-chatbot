@@ -22,14 +22,14 @@ export default function Login() {
 
   return (
     <>
-      <div className="flex flex-row h-screen">
+      <div className="flex flex-row h-screen bg-[#070F2B]">
         <div className="flex-1 flex justify-center items-center">
           <div className="flex h-[70%] rounded-md p-10">
             <img src="/login-1.png" alt="" />
           </div>
         </div>
         <div className="flex-1 flex justify-center items-center">
-          <div className="flex bg-[#1B1A55] w-[90%] px-10 py-10 rounded-md m-5">
+          <div className="flex bg-[#265073] w-[90%] px-10 py-10 rounded-md m-5">
             <form onSubmit={(e) => login(e)} className="w-full">
               <div className="mb-6">
                 <label

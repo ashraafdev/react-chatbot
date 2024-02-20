@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export default class ConversationId extends AbstractModel {
-    constructor(conversationId = null, userId) {
+    constructor(conversationId = null, userId = null) {
         if (conversationId === null) conversationId = uuidv4();
         super(conversationId, userId);
     }

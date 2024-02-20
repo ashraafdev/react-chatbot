@@ -3,7 +3,6 @@ import Body from "../../components/body/body";
 import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import ConversationId from "../../models/ConversationId";
-import "./chatbot.css";
 import { AuthContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import ConversationText from "../../models/ConversationText";
@@ -20,23 +19,33 @@ export default function ChatBot() {
   };
 
   useEffect(() => {
-    if (isAuthenticated === false) navigate('/login');
+    if (isAuthenticated === false) navigate("/login");
   }, [isAuthenticated]);
 
   useEffect(() => {
-    let conversationText = new ConversationText(123, 'hello world!', 'bot');
+    let conversationText = new ConversationText();
     /*conversationText.save(); */
 
-    /* conversationText.where('test', '==', 123).where('ttt', '==', 12345).go(); */
+    console.log(new Date(new Date().setDate(19)));
+
+    let tempDate = new Date();
+    tempDate = tempDate.setDate(19);
+    tempDate = new Date(tempDate).setHours(3, 0, 0, 0);
+    console.log(new Date(tempDate));
+    conversationText.where("created_at", ">=", new Date(tempDate)).go();
   }, []);
 
-  {/* <ChatBotContext.Provider value={[updateMessage]}> */}
+  {
+    /* <ChatBotContext.Provider value={[updateMessage]}> */
+  }
   return (
-      <main>
-        <Header />
-        <Body />
-        <Footer />
-      </main>
+    <main className="flex flex-col h-screen bg-[#070F2B]">
+      <Header />
+      <Body />
+      <Footer />
+    </main>
   );
-  {/* </ChatBotContext.Provider> */}
+  {
+    /* </ChatBotContext.Provider> */
+  }
 }

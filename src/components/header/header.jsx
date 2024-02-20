@@ -1,23 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./header.css";
 
 export default function Header() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const moveToAnotherPage = () => {
+    navigate("/test");
+  };
 
-    const moveToAnotherPage = () => {
-        navigate('/test')
-    }
-
-    return (
-        <div className="header bg-[#1B1A55]">
-            <a onClick={moveToAnotherPage}>
-                <img  width="80" src="https://cdn-icons-png.flaticon.com/512/10061/10061872.png" />
-            </a>
-            <div>
-                <span className="firstName">Your CoPilot</span>
-                <span className="secondName">ChatBot</span>
-            </div>
-        </div>
-    )
+  return (
+    <div className="h-[10%] bg-[#265073] flex justify-center items-center text-white py-4">
+      <a onClick={moveToAnotherPage}>
+        <img
+          width="70"
+          src="https://cdn-icons-png.flaticon.com/512/10061/10061872.png"
+        />
+      </a>
+      <div className="flex flex-col">
+        <span className="text-[20px]">Your CoPilot</span>
+        <span className="text-[30px]">ChatBot</span>
+      </div>
+    </div>
+  );
 }
