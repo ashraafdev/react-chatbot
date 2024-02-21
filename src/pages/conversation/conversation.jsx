@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../App";
-import ConversationBody, {
+import {
   Button,
   ConversationSummary,
 } from "../../components/conversations/conversationComponents";
 import Header from "../../components/header/header";
 import ConversationId from "../../models/ConversationId";
 import moment from "moment";
+import { Spinner } from "../../components/misc/spinner";
 
 export default function Conversations() {
   const { isAuthenticated, authState } = useContext(AuthContext);
+  const [appIsLoaded, setAppIsLoaded] = useState(false);
   const [showDataOf, setShowDataOf] = useState("today");
   const [conversations, setConversations] = useState({
     today: [],
@@ -64,6 +66,7 @@ export default function Conversations() {
       }
 
       setConversations(conversations);
+      setAppIsLoaded(true);
     });
   };
 
@@ -74,12 +77,9 @@ export default function Conversations() {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    console.log(showDataOf);
-  }, [showDataOf]);
-
   return (
     <main className="bg-[#070F2B] h-screen flex flex-col">
+      {isAuthenticated === null && appIsLoaded === false && <Spinner />}
       <Header />
       <div className="flex flex-col h-full w-full px-[5%] py-[20px]">
         <div className="flex w-full">
@@ -122,10 +122,6 @@ export default function Conversations() {
             </div>
           </div>
         </div>
-        {/*  <ConversationBody />
-        <ConversationBody />
-        <ConversationBody />
-        <ConversationBody /> */}
       </div>
     </main>
   );

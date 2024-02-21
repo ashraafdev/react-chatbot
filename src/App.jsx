@@ -17,7 +17,6 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    console.log(1)
     if (!authState && !isPending)
       setIsAuthenticated(false)
     else if (authState && !isPending) 
