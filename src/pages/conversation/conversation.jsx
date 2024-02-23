@@ -8,11 +8,16 @@ import Header from "../../components/header/header";
 import ConversationId from "../../models/ConversationId";
 import moment from "moment";
 import { Spinner } from "../../components/misc/spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function Conversations() {
   const { isAuthenticated, authState } = useContext(AuthContext);
+
   const [appIsLoaded, setAppIsLoaded] = useState(false);
   const [showDataOf, setShowDataOf] = useState("today");
+
+  const navigate = useNavigate();
+
   const [conversations, setConversations] = useState({
     today: [],
     yesterday: [],
@@ -22,10 +27,10 @@ export default function Conversations() {
   });
 
   const getConversations = async () => {
-    let result = await new ConversationId()
+    let result = await (new ConversationId())
       .where("user_id", "in", [authState.uid])
       .orderBy("created_at", "desc")
-      .go();
+      .fectchall();
 
     result.forEach((conversation) => {
       let dateOfConversation = moment(
@@ -76,17 +81,17 @@ export default function Conversations() {
       getConversations();
     }
   }, [isAuthenticated]);
-
+  
   return (
     <main className="bg-[#070F2B] h-screen flex flex-col">
-      {isAuthenticated === null && appIsLoaded === false && <Spinner />}
+      {(isAuthenticated === null || appIsLoaded === false ) && <Spinner />}
       <Header />
       <div className="flex flex-col h-full w-full px-[5%] py-[20px]">
         <div className="flex w-full">
           <div className="w-[95%]">
             <h1 className="text-white text-3xl font-semibold">Conversations</h1>
           </div>
-          <button>
+          <button onClick={() => navigate("/conversation")}>
             <img
               width="48"
               height="48"
@@ -114,6 +119,12 @@ export default function Conversations() {
                 conversations[showDataOf].map((conversation) => {
                   return (
                     <ConversationSummary
+                      onClick={() =>
+                        navigate(
+                          `/conversation/${conversation.data.conversation_id}`
+                        )
+                      }
+                      conversationId={conversation.data.conversation_id}
                       summary={conversation.data.summary}
                       created_at={conversation.data.created_at}
                     />

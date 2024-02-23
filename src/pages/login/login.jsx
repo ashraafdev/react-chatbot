@@ -1,24 +1,38 @@
-import { useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { EmailPasswordAuth } from "../../containers/Auth";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../App";
 
 export default function Login() {
   const email = useRef(null);
   const password = useRef(null);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   async function login(evnt) {
     evnt.preventDefault();
     try {
-      await EmailPasswordAuth(email.current.value, password.current.value);
-      toast.success("Logged with success");
-      navigate("/home");
+      toast.promise(EmailPasswordAuth(email.current.value, password.current.value), {
+        loading: 'Loading',
+        success: () => {
+          setTimeout(() => {
+            navigate("/conversations");
+          });
+
+          return 'Logged with success';
+        },
+        error: (err) => `Error => ${err.message}`,
+      });
     } catch (err) {
       toast.error(`Error => ${err.message}`);
     }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/conversations");
+  }, [isAuthenticated]);
 
   return (
     <>

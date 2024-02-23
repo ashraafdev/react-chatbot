@@ -4,6 +4,7 @@ import { FirebaseAuth } from "../database/Database";
 export async function EmailPasswordAuth(email, password) {
     try {
         await signInWithEmailAndPassword(FirebaseAuth, email, password)
+        return true;
     } catch (err) {
         //console.error(err.message())
         throw new Error(err.message);

@@ -1,8 +1,4 @@
-import {
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import ChatBot from "./pages/main/chatbot.jsx";
 import Login from "./pages/login/login.jsx";
 import { useAuthState } from "./hooks/Auth.js";
@@ -17,19 +13,26 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    if (!authState && !isPending)
-      setIsAuthenticated(false)
-    else if (authState && !isPending) 
-      setIsAuthenticated(true)
+    if (!authState && !isPending) setIsAuthenticated(false);
+    else if (authState && !isPending) setIsAuthenticated(true);
   }, [authState, isPending]);
 
   return (
-    <AuthContext.Provider value={{isAuthenticated, authState}}>
+    <AuthContext.Provider value={{ isAuthenticated, authState }}>
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/"
+            exact
+            element={<Navigate to="/login" replace={true} />}
+          />
           <Route path="/login" exact element={<Login />} />
           <Route path="/conversations" exact element={<Conversations />} />
-          <Route path="/home" exact element={<ChatBot />} />
+          <Route
+            path="/conversation/:conversationId?"
+            exact
+            element={<ChatBot />}
+          />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>

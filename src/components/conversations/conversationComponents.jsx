@@ -27,7 +27,7 @@ export default function ConversationBody(props) {
 
 export function ConversationSummary(props) {
   return (
-    <div className="col-span-1 flex flex-col justify-center items-center h-[80px] bg-[#9290C3] px-[10px] py-[7.5px] rounded-md shrink-0 text-white">
+    <div onClick={props.onClick} className="col-span-1 flex flex-col justify-center items-center h-[80px] bg-[#9290C3] px-[10px] py-[7.5px] rounded-md shrink-0 text-white">
       <h4 className="text-md">{props.summary}</h4>
       <h3 className="text-2xl">{moment(props.created_at.toDate()).format('YYYY-MM-DD')}</h3>
     </div>

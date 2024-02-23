@@ -1,11 +1,18 @@
 import { useContext, useEffect } from "react";
+import { BotMessage, ClientMessage } from "../chat/chat";
 import "./body.css";
 
-export default function Body() {
+export default function Body({conversations}) {
   
   return (
     <div className="w-full h-[80%] overflow-y-auto">
-      <div className="botBox">
+      {conversations && conversations.map(conversation => {
+        if (conversation.data.write_by == 'bot')
+          return <BotMessage key={conversation.id} message={conversation.data.content} />
+        else
+          return <ClientMessage key={conversation.id} message={conversation.data.content} />
+      })}
+     {/*  <div className="botBox">
         <div className="botMessage">
           <div>
             <img
@@ -74,7 +81,7 @@ export default function Body() {
             gggggggggggggggwqfqwfqwfqwfqwfqwfqwfqwfqwfqwfqwfqfqwfqwfqwf
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

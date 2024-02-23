@@ -1,5 +1,5 @@
 import {FirebaseDatabase} from "../database/Database";
-import {OrderByDirection, QueryFieldFilterConstraint, QueryOrderByConstraint, addDoc, collection, getDocs, orderBy, query, where} from 'firebase/firestore';
+import {OrderByDirection, QueryFieldFilterConstraint, QueryOrderByConstraint, addDoc, collection, getDocs, orderBy, query, where, doc, updateDoc} from 'firebase/firestore';
 
 // abstract class to create instance for various collections
 export default abstract class AbstractModel {
@@ -16,6 +16,8 @@ export default abstract class AbstractModel {
 
     // orderBy conditions
     static orderByConditions: QueryOrderByConstraint[] = [];
+
+    static willUpdateAttribues: object = {};
 
     // construct an instance of the collection, not saved
     constructor(...args: any[]) {
@@ -67,10 +69,50 @@ export default abstract class AbstractModel {
         return this;
     }
 
-    async go() {
-        try {
-            console.log(...this.constructor.whereConditions, ...this.constructor.orderByConditions);
+    set(paramsToUpdate: any[]) {
+        paramsToUpdate.forEach((param) => Object.assign(this.constructor.willUpdateAttribues, param));
+        return this;
+    }
 
+    async update() {
+        try {
+            const docData = await this.fetchone();
+            const refOfDocument = doc(FirebaseDatabase, this.constructor.collection, docData.id);
+
+            await updateDoc(refOfDocument, this.constructor.willUpdateAttribues);
+
+            this.constructor.whereConditions = [];
+            this.constructor.orderByConditions = [];
+            this.constructor.willUpdateAttribues = {};
+
+            return true;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    async fetchone() {
+        try {
+            // create query from chain conditions
+            let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.constructor.whereConditions, ...this.constructor.orderByConditions);
+
+            // run the query
+            const querySnapshot = await getDocs(q);
+            
+            this.constructor.whereConditions = [];
+            this.constructor.orderByConditions = [];
+           
+            // get first element
+            if (querySnapshot.docs.length) return {id: querySnapshot.docs[0].id, data: querySnapshot.docs[0].data()};
+            
+            return null;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async fectchall() {
+        try {
             // create query from chain conditions
             let q = query(collection(FirebaseDatabase, this.constructor.collection), ...this.constructor.whereConditions, ...this.constructor.orderByConditions);
 
@@ -85,6 +127,9 @@ export default abstract class AbstractModel {
                 // doc.data() is never undefined for query doc snapshots
                 result = [...result, {id: doc.id, data: doc.data()}];
             });
+
+            this.constructor.whereConditions = [];
+            this.constructor.orderByConditions = [];
 
             return result;
         } catch (err) {
