@@ -39,4 +39,10 @@ export async function ReteriveConversationData(conversationId) {
     }
 }
 
-/* export async function AddConversation(conversationId, ) */
+export async function AddConversation(conversationId, content, writeBy) {
+    try {
+        await (new ConversationText(conversationId, content, writeBy)).save();
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}

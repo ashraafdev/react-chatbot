@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ConversationText from "../../models/ConversationText";
 import OpenAI from "openai";
 import {
+  AddConversation,
   CreateConversation,
   RetreiveConversationText,
 } from "../../containers/Conversation";
@@ -17,6 +18,7 @@ export const ChatBotContext = createContext(null);
 
 export default function ChatBot() {
   const [message, setMessage] = useState("");
+  const [key, setKey] = useState(null);
   const { isAuthenticated, authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const [conversations, setConversations] = useState(null);
@@ -35,6 +37,36 @@ export default function ChatBot() {
     setAppIsLoaded(true); 
   };
 
+  const getResponseFromAI = async () => {
+    try {
+      let response = await fetch('https://qlmmu97872.execute-api.us-east-1.amazonaws.com/dev', {
+        method: 'post',
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: authState.uid,
+          prompt: message,
+        }),
+      });
+
+      let jsonData = await response.json();
+      let data = JSON.parse(JSON.parse(jsonData.body));
+
+      AddConversation(conversationId, message, 'client');
+      AddConversation(conversationId, data.response, 'bot');
+
+      await (new ConversationId()).where('conversation_id', '==', conversationId).set([{summary: data.summary}]).save();
+
+      setKey(Math.random() * 99999);
+
+      //console.log(data);
+    } catch (err) {
+      console.err(err);
+    }
+  }
+
   useEffect(() => {
     if (isAuthenticated === false) navigate("/login");
     else if (isAuthenticated && conversationId === undefined) {
@@ -43,7 +75,7 @@ export default function ChatBot() {
       RetreiveConversationText(conversationId, setConversations);
       setAppIsLoaded(true);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, key]);
 
   useEffect(() => {
     /* let conversationText = new ConversationText();
@@ -78,7 +110,7 @@ export default function ChatBot() {
       {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
       <Header />
       <Body conversations={conversations} />
-      <Footer />
+      <Footer setMessage={setMessage} getResponseFromAI={getResponseFromAI} />
     </main>
   );
   {
