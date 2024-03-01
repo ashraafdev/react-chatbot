@@ -36,7 +36,7 @@ export function ConversationSummary(props) {
 
 export function Button(props) {
   return (
-    <div onClick={props.onClick} className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px]">
+    <div onClick={props.onClick} className={props.className}>
       <div className="py-2 px-3 text-lg font-semibold">{props.name}</div>
     </div>
   );

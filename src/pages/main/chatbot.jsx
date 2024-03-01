@@ -1,12 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Body from "../../components/body/body";
 import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import ConversationId from "../../models/ConversationId";
 import { AuthContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import ConversationText from "../../models/ConversationText";
-import OpenAI from "openai";
 import {
   AddConversation,
   CreateConversation,
@@ -14,7 +12,7 @@ import {
 } from "../../containers/Conversation";
 import { Spinner } from "../../components/misc/spinner";
 
-export const ChatBotContext = createContext(null);
+export const ChatDivContext = createContext(null);
 
 export default function ChatBot() {
   const [message, setMessage] = useState("");
@@ -23,13 +21,11 @@ export default function ChatBot() {
   const navigate = useNavigate();
   const [conversations, setConversations] = useState(null);
 
+  const chatDiv = useRef(null);
+
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
   const { conversationId } = useParams();
-
-  /* const updateMessage = (val) => {
-    setMessage(val);
-  }; */
 
   const newConversation = async () => {
     const conversationId = await CreateConversation(null, null, authState.uid);
@@ -61,7 +57,6 @@ export default function ChatBot() {
 
       setKey(Math.random() * 99999);
 
-      //console.log(data);
     } catch (err) {
       console.err(err);
     }
@@ -78,40 +73,23 @@ export default function ChatBot() {
   }, [isAuthenticated, key]);
 
   useEffect(() => {
-    /* let conversationText = new ConversationText();
-    
-
-    console.log(new Date(new Date().setDate(19)));
-
-    let tempDate = new Date();
-    tempDate = tempDate.setDate(19);
-    tempDate = new Date(tempDate).setHours(3, 0, 0, 0);
-    console.log(new Date(tempDate));
-    conversationText.where("created_at", ">=", new Date(tempDate)).go(); */
-    /* const openai = new OpenAI({ apiKey: import.meta.env.VITE_OPENAI_TOKEN, dangerouslyAllowBrowser: true });
-    
-    const startWithOpenAI = async () => {
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: "You are a helpful assistant." }],
-        model: "gpt-3.5-turbo",
-      });
-
-      console.log(completion.choices[0]);
-    };
-
-    startWithOpenAI(); */
-  }, []);
+    setTimeout(() => {
+      if (appIsLoaded) chatDiv.current.scrollTop = chatDiv.current.scrollHeight
+    }, 500)
+  }, [appIsLoaded, key]);
 
   {
     /* <ChatBotContext.Provider value={[updateMessage]}> */
   }
   return (
-    <main className="relative flex flex-col h-screen bg-[#070F2B]">
-      {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
-      <Header />
-      <Body conversations={conversations} />
-      <Footer setMessage={setMessage} getResponseFromAI={getResponseFromAI} />
-    </main>
+    <ChatDivContext.Provider value={chatDiv}>
+      <main className="relative flex flex-col h-screen bg-[#070F2B]">
+        {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
+        <Header />
+        <Body conversations={conversations} />
+        <Footer setMessage={setMessage} getResponseFromAI={getResponseFromAI} />
+      </main>
+    </ChatDivContext.Provider>
   );
   {
     /* </ChatBotContext.Provider> */

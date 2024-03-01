@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { EmailPasswordAuth } from "../../containers/Auth";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../App";
 
 export default function Login() {
@@ -77,36 +77,21 @@ export default function Login() {
                   required
                 />
               </div>
-              {/*   <div className="flex items-start mb-6">
-                    <div className="flex items-center h-5">
-                    <input
-                        id="remember"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
-                        required
-                    />
-                    </div>
-                    <label
-                    htmlFor="remember"
-                    className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                    I agree with the{" "}
-                    <a
-                        href="#"
-                        className="text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                        terms and conditions
-                    </a>
-                    .
-                    </label>
-                </div> */}
-              <button
-                type="submit"
-                className="text-white bg-[#535C91] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-              >
-                Login
-              </button>
+              <div className="flex gap-5 items-center">
+                <button
+                  type="submit"
+                  className="text-white bg-[#535C91] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                >
+                  Login
+                </button>
+                <div className="text-white text-[20px]">or</div>
+                <Link
+                  to="/register"
+                  className="text-white bg-[#16a34a] hover:bg-[#15803d] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                >
+                  Register
+                </Link>
+              </div>
             </form>
           </div>
         </div>

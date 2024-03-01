@@ -5,6 +5,7 @@ import { useAuthState } from "./hooks/Auth.js";
 import { createContext, useEffect, useState } from "react";
 import "./App.css";
 import Conversations from "./pages/conversation/conversation.jsx";
+import Register from "./pages/register/register.jsx";
 
 export const AuthContext = createContext();
 
@@ -26,6 +27,7 @@ function App() {
             exact
             element={<Navigate to="/login" replace={true} />}
           />
+          <Route path="/register" exact element={<Register />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/conversations" exact element={<Conversations />} />
           <Route

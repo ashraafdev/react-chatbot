@@ -9,6 +9,7 @@ import ConversationId from "../../models/ConversationId";
 import moment from "moment";
 import { Spinner } from "../../components/misc/spinner";
 import { useNavigate } from "react-router-dom";
+import { SignOut } from "../../containers/Auth";
 
 export default function Conversations() {
   const { isAuthenticated, authState } = useContext(AuthContext);
@@ -70,10 +71,20 @@ export default function Conversations() {
         conversations["rest"] = [...conversations["rest"], conversation];
       }
 
+      console.log(conversations);
+
       setConversations(conversations);
-      setAppIsLoaded(true);
     });
+    setAppIsLoaded(true);
   };
+
+  const logout = async () => {
+    try {
+      await SignOut();
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   useEffect(() => {
     if (isAuthenticated === false) navigate("/login");
@@ -101,16 +112,24 @@ export default function Conversations() {
           </button>
         </div>
         <div className="h-full w-full flex gap-10 py-10">
-          <div className="w-[20%] text-white my-[20px] flex flex-col justify-center items-center">
-            <div className="w-full">
-              <Button name="Today" onClick={() => setShowDataOf("today")} />
-              <Button
-                name="Yesterday"
-                onClick={() => setShowDataOf("yesterday")}
-              />
-              <Button name="Week" onClick={() => setShowDataOf("week")} />
-              <Button name="Month" onClick={() => setShowDataOf("month")} />
-              <Button name="Rest" onClick={() => setShowDataOf("rest")} />
+          <div className="w-[20%] flex flex-col">
+            <div className="w-full text-white my-[20px] flex flex-col justify-center items-center">
+              <div className="w-full">
+                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Today" onClick={() => setShowDataOf("today")} />
+                <Button
+                  className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                  name="Yesterday"
+                  onClick={() => setShowDataOf("yesterday")}
+                />
+                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Week" onClick={() => setShowDataOf("week")} />
+                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Month" onClick={() => setShowDataOf("month")} />
+                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Rest" onClick={() => setShowDataOf("rest")} />
+              </div>
+            </div>
+            <div className="w-full h-full text-white my-[20px] flex justify-center items-end">
+              <div className="w-full">
+                <Button className="flex justify-center items-center bg-red-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-red-400 mb-[10px] bg-red" name="Logout" onClick={() => logout()} />
+              </div>
             </div>
           </div>
           <div className="w-full bg-[#265073] h-full rounded-lg p-5">

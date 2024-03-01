@@ -133,6 +133,7 @@ export default abstract class AbstractModel {
 
             return result;
         } catch (err) {
+            throw new Error(err.message);
             console.log(err);
         }
     }

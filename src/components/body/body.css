@@ -34,6 +34,7 @@
 }
 
 .clientMessage {
+    display: flex;
     color: white;
     background-color: #B67352;
     width: 25%;
