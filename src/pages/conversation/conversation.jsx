@@ -29,7 +29,7 @@ export default function Conversations() {
   });
 
   const getConversations = async () => {
-    let result = await (new ConversationId())
+    let result = await new ConversationId()
       .where("user_id", "in", [authState.uid])
       .orderBy("created_at", "desc")
       .fectchall();
@@ -85,9 +85,9 @@ export default function Conversations() {
     try {
       await SignOut();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (isAuthenticated === false) navigate("/login");
@@ -95,10 +95,10 @@ export default function Conversations() {
       getConversations();
     }
   }, [isAuthenticated]);
-  
+
   return (
     <main className="bg-login-gradient h-screen flex flex-col">
-      {(isAuthenticated === null || appIsLoaded === false ) && <Spinner />}
+      {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
       <Header />
       <div className="flex flex-col h-full w-full px-[5%] py-[20px]">
         <div className="flex w-full">
@@ -118,40 +118,60 @@ export default function Conversations() {
           <div className="w-[20%] flex flex justify-center items-center">
             <div className="flex items-center w-full h-full text-white my-[20px] ">
               <div className="flex items-stretch flex-wrap h-full w-full">
-                <div className="flex flex-col basis-6/8">
-
-                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Today" onClick={() => setShowDataOf("today")} />
-                <Button
-                  className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
-                  name="Yesterday"
-                  onClick={() => setShowDataOf("yesterday")}
-                />
-                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Week" onClick={() => setShowDataOf("week")} />
-                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Month" onClick={() => setShowDataOf("month")} />
-                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Rest" onClick={() => setShowDataOf("rest")} />
+                <div className="flex flex-wrap">
+                  <Button
+                    className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                    name="Today"
+                    onClick={() => setShowDataOf("today")}
+                  />
+                  <Button
+                    className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                    name="Yesterday"
+                    onClick={() => setShowDataOf("yesterday")}
+                  />
+                  <Button
+                    className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                    name="Week"
+                    onClick={() => setShowDataOf("week")}
+                  />
+                  <Button
+                    className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                    name="Month"
+                    onClick={() => setShowDataOf("month")}
+                  />
+                  <Button
+                    className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                    name="Rest"
+                    onClick={() => setShowDataOf("rest")}
+                  />
                 </div>
-                <Button className="w-full flex justify-center items-center self-end bg-red-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-red-400 mb-[10px] bg-red" name="Logout" onClick={() => logout()} />
+                <Button
+                  className="w-full flex justify-center items-center self-end bg-red-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-red-400 mb-[10px] bg-red"
+                  name="Logout"
+                  onClick={() => logout()}
+                />
               </div>
             </div>
-           
           </div>
           <div className="flex flex-col w-full bg-[#00000040] h-full rounded-lg p-5 gap-5 overflow-y-auto">
-              {conversations[showDataOf].length ?
-                conversations[showDataOf].map((conversation) => {
-                  return (
-                    <ConversationSummary
-                      onClick={() =>
-                        navigate(
-                          `/conversation/${conversation.data.conversation_id}`
-                        )
-                      }
-                      conversationId={conversation.data.conversation_id}
-                      summary={conversation.data.summary}
-                      created_at={conversation.data.created_at}
-                    />
-                  );
-                }) : <NoData />}
-           
+            {conversations[showDataOf].length ? (
+              conversations[showDataOf].map((conversation) => {
+                return (
+                  <ConversationSummary
+                    onClick={() =>
+                      navigate(
+                        `/conversation/${conversation.data.conversation_id}`
+                      )
+                    }
+                    conversationId={conversation.data.conversation_id}
+                    summary={conversation.data.summary}
+                    created_at={conversation.data.created_at}
+                  />
+                );
+              })
+            ) : (
+              <NoData />
+            )}
           </div>
         </div>
       </div>

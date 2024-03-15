@@ -83,7 +83,7 @@ export default function ChatBot() {
   }
   return (
     <ChatDivContext.Provider value={chatDiv}>
-      <main className="relative flex flex-col h-screen bg-[#070F2B]">
+      <main className="relative flex flex-col h-screen bg-login-gradient">
         {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
         <Header />
         <Body conversations={conversations} />
