@@ -27,9 +27,18 @@ export default function ConversationBody(props) {
 
 export function ConversationSummary(props) {
   return (
-    <div onClick={props.onClick} className="col-span-1 flex flex-col justify-center items-center h-[80px] bg-[#9290C3] px-[10px] py-[7.5px] rounded-md shrink-0 text-white">
-      <h4 className="text-md">{props.summary}</h4>
-      <h3 className="text-2xl">{moment(props.created_at.toDate()).format('YYYY-MM-DD')}</h3>
+    <div className="w-full flex items-center h-[80px] bg-[#9290C3] px-[15px] py-[7.5px] px-6 rounded-md shrink-0 text-white">
+      <h4 className="text-xl basis-8/12">{props.summary}</h4>
+      <h3 className="text-2xl flex flex-row-reverse basis-3/12">
+        {moment(props.created_at.toDate()).format("YYYY-MM-DD HH:MM:SS")}
+      </h3>
+      <div className="flex flex-row-reverse basis-1/12">
+        <img
+          onClick={props.onClick}
+          className="cursor-pointer"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA/UlEQVR4nO2UPQ7CMAyFOyAWCgMzEkdp4TocAIHYKcfoDVDhBDBxATYm/g7AwPghCw+ocpKWoWLgSVny/J6d2EkU/fHTAPrABNgCZ+Cp66x7wvW/MW4BM+BBGA+NbVU1HwAH6uMg2pD5EDgZ4jWQAB1dKVAYcaIdusxj4GiIpp6C5ka8eMRWcG5VHr25NrACbsAVyGRPuY2hy8vmcmQLifJiWEam3MihTT8T7B1BsfJSeRl35boO7a5OgqvBXZTrVUmQ+o6JfUVL5cY+bajJxUeTMz1Jucnyov1NDozp3DOmi8pjGnhoG52WWNfYUbn7oTXyVTTy2TXyXf/RKF7rQNF5f1bC6AAAAABJRU5ErkJggg=="
+        />
+      </div>
     </div>
   );
 }

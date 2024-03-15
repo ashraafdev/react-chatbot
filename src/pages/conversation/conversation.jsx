@@ -10,6 +10,7 @@ import moment from "moment";
 import { Spinner } from "../../components/misc/spinner";
 import { useNavigate } from "react-router-dom";
 import { SignOut } from "../../containers/Auth";
+import NoData from "../../components/common/nodata";
 
 export default function Conversations() {
   const { isAuthenticated, authState } = useContext(AuthContext);
@@ -32,6 +33,8 @@ export default function Conversations() {
       .where("user_id", "in", [authState.uid])
       .orderBy("created_at", "desc")
       .fectchall();
+
+    console.log(result);
 
     result.forEach((conversation) => {
       let dateOfConversation = moment(
@@ -66,7 +69,7 @@ export default function Conversations() {
           "[]"
         )
       ) {
-        conversations["months"] = [...conversations["months"], conversation];
+        conversations["month"] = [...conversations["month"], conversation];
       } else {
         conversations["rest"] = [...conversations["rest"], conversation];
       }
@@ -94,7 +97,7 @@ export default function Conversations() {
   }, [isAuthenticated]);
   
   return (
-    <main className="bg-[#070F2B] h-screen flex flex-col">
+    <main className="bg-login-gradient h-screen flex flex-col">
       {(isAuthenticated === null || appIsLoaded === false ) && <Spinner />}
       <Header />
       <div className="flex flex-col h-full w-full px-[5%] py-[20px]">
@@ -112,29 +115,28 @@ export default function Conversations() {
           </button>
         </div>
         <div className="h-full w-full flex gap-10 py-10">
-          <div className="w-[20%] flex flex-col">
-            <div className="w-full text-white my-[20px] flex flex-col justify-center items-center">
-              <div className="w-full">
-                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Today" onClick={() => setShowDataOf("today")} />
+          <div className="w-[20%] flex flex justify-center items-center">
+            <div className="flex items-center w-full h-full text-white my-[20px] ">
+              <div className="flex items-stretch flex-wrap h-full w-full">
+                <div className="flex flex-col basis-6/8">
+
+                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Today" onClick={() => setShowDataOf("today")} />
                 <Button
-                  className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
+                  className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red"
                   name="Yesterday"
                   onClick={() => setShowDataOf("yesterday")}
                 />
-                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Week" onClick={() => setShowDataOf("week")} />
-                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Month" onClick={() => setShowDataOf("month")} />
-                <Button className="flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Rest" onClick={() => setShowDataOf("rest")} />
+                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Week" onClick={() => setShowDataOf("week")} />
+                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Month" onClick={() => setShowDataOf("month")} />
+                <Button className="w-full flex justify-center items-center bg-yellow-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-yellow-400 mb-[10px] bg-red" name="Rest" onClick={() => setShowDataOf("rest")} />
+                </div>
+                <Button className="w-full flex justify-center items-center self-end bg-red-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-red-400 mb-[10px] bg-red" name="Logout" onClick={() => logout()} />
               </div>
             </div>
-            <div className="w-full h-full text-white my-[20px] flex justify-center items-end">
-              <div className="w-full">
-                <Button className="flex justify-center items-center bg-red-500 duration-150 hover:!border-b-2 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-[#265073] cursor-pointer active:bg-red-400 mb-[10px] bg-red" name="Logout" onClick={() => logout()} />
-              </div>
-            </div>
+           
           </div>
-          <div className="w-full bg-[#265073] h-full rounded-lg p-5">
-            <div className="grid grid-cols-4 gap-5 max-h-[450px] overflow-y-auto">
-              {conversations[showDataOf] &&
+          <div className="flex flex-col w-full bg-[#00000040] h-full rounded-lg p-5 gap-5 overflow-y-auto">
+              {conversations[showDataOf].length ?
                 conversations[showDataOf].map((conversation) => {
                   return (
                     <ConversationSummary
@@ -148,8 +150,8 @@ export default function Conversations() {
                       created_at={conversation.data.created_at}
                     />
                   );
-                })}
-            </div>
+                }) : <NoData />}
+           
           </div>
         </div>
       </div>
