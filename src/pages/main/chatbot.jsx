@@ -20,6 +20,7 @@ export default function ChatBot() {
   const { isAuthenticated, authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const [conversations, setConversations] = useState(null);
+  const [isNewChat, setIsNewChat] = useState(false);
 
   const chatDiv = useRef(null);
 
@@ -31,6 +32,7 @@ export default function ChatBot() {
     const conversationId = await CreateConversation(null, null, authState.uid);
     navigate(`/conversation/${conversationId}`, {replace: true});
     setAppIsLoaded(true); 
+    setIsNewChat(true);
   };
 
   const getResponseFromAI = async () => {
@@ -44,16 +46,20 @@ export default function ChatBot() {
         body: JSON.stringify({
           uid: authState.uid,
           prompt: message,
+          newChat: isNewChat ? 1 : 0,
+          conversationId: conversationId,
         }),
       });
 
-      let jsonData = await response.json();
-      let data = JSON.parse(JSON.parse(jsonData.body));
+      setIsNewChat(false);
 
-      AddConversation(conversationId, message, 'client');
-      AddConversation(conversationId, data.response, 'bot');
+      //let jsonData = await response.json();
+      //let data = JSON.parse(jsonData.body);
 
-      await (new ConversationId()).where('conversation_id', '==', conversationId).set([{summary: data.summary}]).save();
+      //AddConversation(conversationId, message, 'client');
+      //AddConversation(conversationId, data.response, 'bot');
+
+      //await (new ConversationId()).where('conversation_id', '==', conversationId).set([{summary: data.summary}]).save();
 
       setKey(Math.random() * 99999);
 
@@ -83,7 +89,7 @@ export default function ChatBot() {
   }
   return (
     <ChatDivContext.Provider value={chatDiv}>
-      <main className="relative flex flex-col h-screen bg-[#070F2B]">
+      <main className="relative flex flex-col h-screen bg-login-gradient">
         {(isAuthenticated === null || appIsLoaded === false) && <Spinner />}
         <Header />
         <Body conversations={conversations} />
