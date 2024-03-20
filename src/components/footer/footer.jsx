@@ -1,4 +1,3 @@
-/* import { ChatBotContext } from "./../../pages/main/chatbot"; */
 import { useContext, useEffect } from "react";
 
 export default function Footer({ setMessage, getResponseFromAI }) {

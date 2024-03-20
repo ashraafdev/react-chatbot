@@ -10,7 +10,7 @@ export default function Body({conversations}) {
   return (
     <div id="chatDiv" ref={chatDiv} className="w-full h-[80%] overflow-y-auto">
       {conversations && conversations.map(conversation => {
-        if (conversation.data.write_by == 'bot')
+        if (conversation.data.write_by == 'assistant')
           return <BotMessage key={conversation.id} message={conversation.data.content} />
         else
           return <ClientMessage key={conversation.id} message={conversation.data.content} />
